@@ -1,4 +1,4 @@
-@Library('ace@master') _ 
+@Library('ace@master') _
 
 pipeline {
     parameters {
@@ -13,10 +13,10 @@ pipeline {
                 checkout scm
                 container('jmeter') {
                     script {
-                    def status = executeJMeter ( 
+                    def status = executeJMeter (
                         scriptName: "jmeter/simplenodeservice_load.jmx",
                         resultsDir: "perfCheck_${env.APP_NAME}_staging_${BUILD_NUMBER}",
-                        serverUrl: "simplenodeservice.staging", 
+                        serverUrl: "simplenodeservice.staging",
                         serverPort: 80,
                         checkPath: '/health',
                         vuCount: 1,
@@ -34,27 +34,27 @@ pipeline {
             }
         }
 
-        stage('Manual approval') {
-            // no agent, so executors are not used up when waiting for approvals
-            agent none
-            steps {
-                script {
-                    try {
-                        timeout(time:10, unit:'MINUTES') {
-                            env.APPROVE_PROD = input message: 'Promote to Production', ok: 'Continue', parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING to PRODUCTION?')]
-                            if (env.APPROVE_PROD == 'YES'){
-                                env.DPROD = true
-                            } else {
-                                env.DPROD = false
-                            }
-                        }
-                    } catch (error) {
-                        env.DPROD = true
-                        echo 'Timeout has been reached! Deploy to PRODUCTION automatically activated'
-                    }
-                }
-            }
-        }
+        // stage('Manual approval') {
+        //     // no agent, so executors are not used up when waiting for approvals
+        //     agent none
+        //     steps {
+        //         script {
+        //             try {
+        //                 timeout(time:10, unit:'MINUTES') {
+        //                     env.APPROVE_PROD = input message: 'Promote to Production', ok: 'Continue', parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING to PRODUCTION?')]
+        //                     if (env.APPROVE_PROD == 'YES'){
+        //                         env.DPROD = true
+        //                     } else {
+        //                         env.DPROD = false
+        //                     }
+        //                 }
+        //             } catch (error) {
+        //                 env.DPROD = true
+        //                 echo 'Timeout has been reached! Deploy to PRODUCTION automatically activated'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Promote to production') {
             // no agent, so executors are not used up when waiting for other job to complete
@@ -70,6 +70,6 @@ pipeline {
                     string(name: 'APP_NAME', value: "${env.APP_NAME}")
                 ]
             }
-        }  
+        }
     }
 }
