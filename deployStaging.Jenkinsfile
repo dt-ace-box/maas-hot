@@ -48,38 +48,53 @@ pipeline {
         }
       }
     }
+    // stage('DT send deploy event') {
+    //   steps {
+    //     script {
+    //       def status = dt_pushDynatraceDeploymentEvent (
+    //         tagRule : tagMatchRules,
+    //         deploymentVersion: "${env.BUILD}",
+    //         customProperties : [
+    //         [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+    //         [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+    //         ]
+    //         )
+    //       }
+    //     }
+    //   }
     stage('DT send deploy event') {
       steps {
-        script {
-          def status = dt_pushDynatraceDeploymentEvent (
-            tagRule : tagMatchRules,
-            deploymentVersion: "${env.BUILD}",
-            customProperties : [
-            [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-            [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-            ]
-            )
+        container("curl") {
+          script {
+            def status = dt_pushDynatraceDeploymentEvent (
+              tagRule : tagMatchRules,
+              deploymentVersion: "${env.BUILD}",
+              customProperties : [
+              [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+              [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+              ]
+              )
+            }
           }
         }
       }
-    
 
-    stage('Run tests') {
-      steps {
-        build job: "3. Test",
-        parameters: [
-        string(name: 'APP_NAME', value: "${env.APP_NAME}")
-        ]
+      stage('Run tests') {
+        steps {
+          build job: "3. Test",
+          parameters: [
+          string(name: 'APP_NAME', value: "${env.APP_NAME}")
+          ]
+        }
       }
     }
   }
-}
 
-def generateDynamicMetaData(){
-  String returnValue = "";
-  returnValue += "SCM=${env.GIT_URL} "
-  returnValue += "Branch=${env.GIT_BRANCH} "
-  returnValue += "Build=${env.BUILD} "
-  returnValue += "Image=${env.TAG_STAGING} "
-  return returnValue;
-}
+  def generateDynamicMetaData(){
+    String returnValue = "";
+    returnValue += "SCM=${env.GIT_URL} "
+    returnValue += "Branch=${env.GIT_BRANCH} "
+    returnValue += "Build=${env.BUILD} "
+    returnValue += "Image=${env.TAG_STAGING} "
+    return returnValue;
+  }
