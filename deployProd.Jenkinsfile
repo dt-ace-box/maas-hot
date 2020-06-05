@@ -33,21 +33,6 @@ pipeline {
         }
       }
     }
-    stage('DT send deploy event') {
-      steps {
-          script {
-            def status = dt_pushDynatraceDeploymentEvent (
-              tagRule : tagMatchRules,
-              deploymentVersion: "${env.BUILD}",
-              customProperties : [
-                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-              ]
-              )
-            }
-          }
-      }
-    }
   }
 
   def generateMetaData(){
