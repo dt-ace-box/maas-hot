@@ -66,7 +66,7 @@ pipeline {
       steps {
         container("curl") {
           script {
-            def status = dt_pushDynatraceDeploymentEvent (
+            def status = pushDynatraceDeploymentEvent (
               tagRule : tagMatchRules,
               deploymentVersion: "${env.BUILD}",
               customProperties : [
