@@ -1,4 +1,4 @@
-@Library('ace') _
+@Library('ace@latest') _
 
 def tagMatchRules = [
 [
