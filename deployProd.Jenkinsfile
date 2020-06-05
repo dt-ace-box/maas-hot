@@ -42,3 +42,4 @@ pipeline {
     returnValue += "Build=${env.BUILD} "
     return returnValue;
   }
+}
