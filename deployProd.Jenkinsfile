@@ -1,3 +1,15 @@
+def tagMatchRules = [
+  [
+    "meTypes": [
+      ["meType": "SERVICE"]
+    ],
+    tags : [
+      ["context": "CONTEXTLESS", "key": "app", "value": "simplenodeservice"],
+      ["context": "CONTEXTLESS", "key": "environment", "value": "staging"]
+    ]
+  ]
+]
+
 pipeline {
   parameters {
     string(name: 'APP_NAME', defaultValue: 'simplenodeservice', description: 'The name of the service to deploy.', trim: true)
@@ -23,7 +35,6 @@ pipeline {
     }
     stage('DT send deploy event') {
       steps {
-        container("curl") {
           script {
             def status = dt_pushDynatraceDeploymentEvent (
               tagRule : tagMatchRules,
@@ -35,7 +46,6 @@ pipeline {
               )
             }
           }
-        }
       }
     }
   }
