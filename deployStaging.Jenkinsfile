@@ -1,3 +1,5 @@
+@Library('ace')
+
 def tagMatchRules = [
 [
 "meTypes": [
@@ -66,7 +68,7 @@ pipeline {
       steps {
         container("curl") {
           script {
-            def status = pushDynatraceDeploymentEvent (
+            def status = dt_pushDynatraceDeploymentEvent (
               tagRule : tagMatchRules,
               deploymentVersion: "${env.BUILD}",
               customProperties : [
