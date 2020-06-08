@@ -65,7 +65,7 @@ pipeline {
     stage('DT send Info event') {
       steps {
           script {
-            def status = dt_pushDynatraceInfoEvent (
+            def info = dt_pushDynatraceInfoEvent (
               tagRule : tagMatchRules,
               customProperties : [
                 [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
@@ -79,7 +79,7 @@ pipeline {
     stage('DT send Config event') {
       steps {
           script {
-            def status = dt_pushDynatraceConfigurationEvent (
+            def config = dt_pushDynatraceConfigurationEvent (
               tagRule : tagMatchRules,
               customProperties : [
                 [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
