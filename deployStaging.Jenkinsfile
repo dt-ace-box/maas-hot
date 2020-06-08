@@ -59,18 +59,23 @@ pipeline {
                 [key: 'Git commit', value: "${env.GIT_COMMIT}"]
               ]
             )
-            def info = dt_pushDynatraceInfoEvent (
-              tagRule : tagMatchRules,
-              customProperties : [
-                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-              ],
-              description: 'Info from Jenkins'
-            )
-
           }
       }
     }
+    // stage('DT send Info event') {
+    //   steps {
+    //       script {
+    //         def info = dt_pushDynatraceInfoEvent (
+    //           tagRule : tagMatchRules,
+    //           customProperties : [
+    //             [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+    //             [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+    //           ],
+    //           description: 'Info from Jenkins'
+    //         )
+    //       }
+    //   }
+    // }
     stage('DT send Config event') {
       steps {
           script {
