@@ -65,7 +65,7 @@ pipeline {
     stage('DT send deploy event2') {
       steps {
           script {
-            def status = dt_pushDynatraceDeploymentEvent (
+            def status = dt_pushDynatraceInfoEvent (
               tagRule : tagMatchRules,
               deploymentVersion: "${env.BUILD}",
               customProperties : [
