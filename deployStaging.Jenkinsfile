@@ -1,14 +1,14 @@
 @Library('ace@master') _
 
-def tagMatchRules = [{
+def tagMatchRules = [[
   "meTypes": [
     "SERVICE"
   ],
   tags: [
-    {"context": "CONTEXTLESS", "key": "app", "value": "simplenodeservice"},
-    {"context": "CONTEXTLESS", "key": "environment", "value": "staging"}
+    ["context": "CONTEXTLESS", "key": "app", "value": "simplenodeservice"],
+    ["context": "CONTEXTLESS", "key": "environment", "value": "staging"]
   ]
-}]
+]]
 
 pipeline {
   parameters {
