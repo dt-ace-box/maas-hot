@@ -59,12 +59,6 @@ pipeline {
                 [key: 'Git commit', value: "${env.GIT_COMMIT}"]
               ]
             )
-          }
-      }
-    }
-    stage('DT send Info event') {
-      steps {
-          script {
             def info = dt_pushDynatraceInfoEvent (
               tagRule : tagMatchRules,
               customProperties : [
@@ -73,6 +67,7 @@ pipeline {
               ],
               description: 'Info from Jenkins'
             )
+
           }
       }
     }
