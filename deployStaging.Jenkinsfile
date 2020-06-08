@@ -1,16 +1,14 @@
 @Library('ace@master') _
 
-def tagMatchRules = [
-[
-"meTypes": [
-["meType": "SERVICE"]
-],
-tags : [
-["context": "CONTEXTLESS", "key": "app", "value": "simplenodeservice"],
-["context": "CONTEXTLESS", "key": "environment", "value": "staging"]
-]
-]
-]
+def tagMatchRules = [{
+  "meTypes": [
+    "SERVICE"
+  ],
+  tags: [
+    {"context": "CONTEXTLESS", "key": "app", "value": "simplenodeservice"},
+    {"context": "CONTEXTLESS", "key": "environment", "value": "staging"}
+  ]
+}]
 
 pipeline {
   parameters {
@@ -50,47 +48,33 @@ pipeline {
         }
       }
     }
-    // stage('DT send deploy event') {
-    //   steps {
-    //     script {
-    //       def status = dt_pushDynatraceDeploymentEvent (
-    //         tagRule : tagMatchRules,
-    //         deploymentVersion: "${env.BUILD}",
-    //         customProperties : [
-    //         [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-    //         [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-    //         ]
-    //         )
-    //       }
-    //     }
-    //   }
     stage('DT send deploy event') {
       steps {
-        container("curl") {
+        // container("curl") {
           script {
             def status = dt_pushDynatraceDeploymentEvent (
               tagRule : tagMatchRules,
               deploymentVersion: "${env.BUILD}",
               customProperties : [
-              [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-              [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
               ]
-              )
-            }
+            )
           }
         }
-      }
+        // }
+    }
 
-      stage('Run tests') {
-        steps {
-          build job: "3. Test",
-          parameters: [
+    stage('Run tests') {
+      steps {
+        build job: "3. Test",
+        parameters: [
           string(name: 'APP_NAME', value: "${env.APP_NAME}")
-          ]
-        }
+        ]
       }
     }
   }
+}
 
   def generateDynamicMetaData(){
     String returnValue = "";
