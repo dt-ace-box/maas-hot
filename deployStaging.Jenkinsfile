@@ -50,7 +50,6 @@ pipeline {
     }
     stage('DT send deploy event') {
       steps {
-        // container("curl") {
           script {
             def status = dt_pushDynatraceDeploymentEvent (
               tagRule : tagMatchRules,
@@ -61,8 +60,36 @@ pipeline {
               ]
             )
           }
-        }
-        // }
+      }
+    }
+    stage('DT send Info event') {
+      steps {
+          script {
+            def status = dt_pushDynatraceInfoEvent (
+              tagRule : tagMatchRules,
+              customProperties : [
+                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+              ],
+              description: 'Info from Jenkins',
+            )
+          }
+      }
+    }
+    stage('DT send Config event') {
+      steps {
+          script {
+            def status = dt_pushDynatraceConfigurationEvent (
+              tagRule : tagMatchRules,
+              customProperties : [
+                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+              ],
+              description: 'Config from Jenkins',
+              configuration: 'Changed Things...'
+            )
+          }
+      }
     }
 
     stage('Run tests') {
