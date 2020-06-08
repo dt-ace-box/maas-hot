@@ -81,12 +81,12 @@ pipeline {
           script {
             def config = dt_pushDynatraceConfigurationEvent (
               tagRule : tagMatchRules,
+              description: 'Config from Jenkins',
+              configuration: 'Changed Things...',
               customProperties : [
                 [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
                 [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-              ],
-              description: 'Config from Jenkins',
-              configuration: 'Changed Things...'
+              ]
             )
           }
       }
