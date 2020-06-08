@@ -62,6 +62,20 @@ pipeline {
           }
       }
     }
+    stage('DT send deploy event2') {
+      steps {
+          script {
+            def status = dt_pushDynatraceDeploymentEvent (
+              tagRule : tagMatchRules,
+              deploymentVersion: "${env.BUILD}",
+              customProperties : [
+                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+              ]
+            )
+          }
+      }
+    }
     // stage('DT send Info event') {
     //   steps {
     //       script {
@@ -76,21 +90,21 @@ pipeline {
     //       }
     //   }
     // }
-    stage('DT send Config event') {
-      steps {
-          script {
-            def config = dt_pushDynatraceConfigurationEvent (
-              tagRule : tagMatchRules,
-              description: 'Config from Jenkins',
-              configuration: 'Changed Things...',
-              customProperties : [
-                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
-              ]
-            )
-          }
-      }
-    }
+    // stage('DT send Config event') {
+    //   steps {
+    //     script {
+    //       def config = dt_pushDynatraceConfigurationEvent (
+    //         tagRule : tagMatchRules,
+    //         description: 'Config from Jenkins',
+    //         configuration: 'Changed Things...',
+    //         customProperties : [
+    //           [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+    //           [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+    //         ]
+    //       )
+    //     }
+    //   }
+    // }
 
     stage('Run tests') {
       steps {
