@@ -65,7 +65,7 @@ pipeline {
     stage('DT send Info event') {
       steps {
         script {
-          def status = dt_pushDynatraceInfoEvent (
+          def status1 = dt_pushDynatraceInfoEvent (
             tagRule : tagMatchRules,
             deploymentVersion: "${env.BUILD}",
             description: "The Coffee Machine Broke.",
@@ -81,7 +81,7 @@ pipeline {
     stage('DT send Config event') {
       steps {
         script {
-          def status = dt_pushDynatraceInfoEvent (
+          def status2 = dt_pushDynatraceInfoEvent (
             tagRule : tagMatchRules,
             deploymentVersion: "${env.BUILD}",
             description: "Changed Coffee Filter",
