@@ -62,7 +62,7 @@ pipeline {
           }
       }
     }
-    stage('DT send deploy event2') {
+    stage('DT send Info event') {
       steps {
           script {
             def status = dt_pushDynatraceInfoEvent (
