@@ -68,6 +68,24 @@ pipeline {
           def status = dt_pushDynatraceInfoEvent (
             tagRule : tagMatchRules,
             deploymentVersion: "${env.BUILD}",
+            description: "The Coffee Machine Broke.",
+            title: "No Coffee.",
+            customProperties : [
+              [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+              [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+            ]
+          )
+        }
+      }
+    }
+    stage('DT send Config event') {
+      steps {
+        script {
+          def status = dt_pushDynatraceInfoEvent (
+            tagRule : tagMatchRules,
+            deploymentVersion: "${env.BUILD}",
+            description: "Changed Coffee Filter",
+            configuration: "Coffee Filter 2.0",
             customProperties : [
               [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
               [key: 'Git commit', value: "${env.GIT_COMMIT}"]
