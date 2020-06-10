@@ -64,6 +64,8 @@ pipeline {
     }
     stage('DT send Info event') {
       steps {
+        checkout scm
+        
           script {
             def status = dt_pushDynatraceInfoEvent (
               tagRule : tagMatchRules,
