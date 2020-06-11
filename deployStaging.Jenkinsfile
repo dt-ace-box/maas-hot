@@ -58,12 +58,6 @@ pipeline {
               "Jenkins Build Number": env.BUILD_ID,
               "Git commit": env.GIT_COMMIT
             ]
-
-            // "customProperties": {
-            //   "2": "Lemon",
-            //   "3": "Lime"
-            // }
-
           )
         }
       }
