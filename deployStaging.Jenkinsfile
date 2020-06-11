@@ -81,7 +81,7 @@ pipeline {
     stage('DT send Config event') {
       steps {
         script {
-          def status2 = dt_pushDynatraceInfoEvent (
+          def status2 = dt_pushDynatraceConfigurationEvent (
             tagRule : tagMatchRules,
             deploymentVersion: "${env.BUILD}",
             description: "Changed Coffee Filter",
