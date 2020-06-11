@@ -71,8 +71,8 @@ pipeline {
             description: "The Coffee Machine Broke.",
             title: "No Coffee.",
             customProperties : [
-              [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
-              [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+              'Jenkins Build Number': "${env.BUILD_ID}",
+              'Git commit': "${env.GIT_COMMIT}"
             ]
           )
         }
